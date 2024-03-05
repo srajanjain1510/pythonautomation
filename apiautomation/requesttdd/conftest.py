@@ -2,7 +2,9 @@
 conftest.py is to define the fixtures
 """
 import configparser
+
 import pytest
+import toml
 
 
 @pytest.fixture(scope='session')
@@ -52,11 +54,19 @@ def sixth_entry(fourth_entry, fifth_entry):
 @pytest.hookimpl(optionalhook=True)
 def pytest_add_option(parser):
     parser.addoption("--length", action="store", default="0", help="length of password")
-    #parser.addoption("--no_of_alphanumeric", action="store", default="5", help="no of alphanumeric characters")
+    # parser.addoption("--no_of_alphanumeric", action="store", default="5", help="no of alphanumeric characters")
+
 
 @pytest.fixture()
 def generate_password_options(request):
     length = int(request.config.getoption("--length"))
-    #alphanumberic_char_count = request.config.getoption("--no_of_alphanumeric")
+    # alphanumberic_char_count = request.config.getoption("--no_of_alphanumeric")
 
     return length
+
+
+@pytest.fixture(scope='session')
+def get_config_toml():
+    toml_file = open('../../config/config.toml', 'r')
+    config = toml.load(toml_file)
+    return config

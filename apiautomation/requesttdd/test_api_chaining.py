@@ -6,9 +6,10 @@ from apiautomation.model.payload_model import payload_model
 
 
 @pytest.mark.order(1)
-def test_create_user(get_url, share_context):
+def test_create_user(get_config_toml, share_context):
+    base_url = get_config_toml['server']['url']
     test_data_json = payload_model("Aknthony", "DuES")
-    post_response = requests.post(get_url, test_data_json.serialize(),timeout=5)
+    post_response = requests.post(base_url, test_data_json.serialize(),timeout=5)
     share_context.append(post_response.json()['id'])
     print(share_context[0])
 
